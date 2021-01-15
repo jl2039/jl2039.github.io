@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<h1>1. Enable SSH in Ubuntu 18.04</h1>
+<p> &nbsp; Step 1. sudo apt install openssh-server<p>
+<p> &nbsp; Step 2. sudo systemctl status ssh //see Active: active(running)<p>
+<p> &nbsp; sudo ufw allow ssh<p>
+
+<h1>2. Enable saved SSH key in new system </h1>
+<p> &nbsp; Step 1. sudo chmod 600 ~/.ssh/id_rsa ~/.ssh/id_rsa.pub  </p>
+<p> &nbsp; Step 2. eval $(ssh-agent -s) # start ssh-agent in the background</p> 
+<p> &nbsp; Step 3. ssh-add ~/.ssh/id_rsa<p>
+
+<h1> 3. CP210X UART post installation and screen command</h1>
+<p> &nbsp; Step 1. sudo chmod 666 /dev/ttyUSB0 # Modify the privilege</p>
+<p> &nbsp; Step 2. echo defscrollback 100000 >> ~/.screenrc</p>
+
+<h1> 4. Petalinux 2018.3 installation in Ubuntu 2018.4</h1>
+<p> &nbsp; Step 1. sudo apt gawk #awk: read error(Bad Address)</p>
+
+<h1> 5. RISC-V gnu-toolchain and QEMU </h1>
+<p> &nbsp; Step 0. git clone https://github.com/john-liu2039/RISCV_QEMU_full_toolchain.git </p>
+<p> &nbsp; Step 1. riscv-gnu-toolchain</p>
+<p> &emsp; cd riscv-gnu-toolchain </p>
+<p> &emsp; ./configure --prefix=/opt/riscv --enable-multilib </p>
+<p> &emsp; sudo make newlib -j8 </p>
+<p> &emsp; sudo make linux -j8 </p>
+<p> &emsp; echo export PATH=$PATH:/opt/riscv/bin >> ~/.bashrc</p>
+<p> &emsp; echo export RISCV=/opt/risc >> ~/.bashrc </p>
+<p> &nbsp; Step 2. risv-qemu</p>
+<p> &embp; cd riscv-qemu </p>
+<p> &embp; Diasble git-submodule-update in Makefile: sed -i 's/ifeq (1,$(git_module_status))/ifeq (0,$(git_module_status))/' Makefile </p>
+<p> &embp; ./configure --target-list=riscv64-softmmu,riscv32-softmmu </p>
+<p> &embp; make -j8</p>
+<p> &embp; sudo make install</p>
+<p> &nbsp; Step 3. Rootfs: busybear linux</p>
+<p> &embp; cd busybear-linux</p>
+<p> &embp; make -j8 </p>
+<p> &nbsp; Step 4. Bootloader: RISC-V Linux version 4.14</p>
+<p> &embp; cd riscv-linux</p>
+<p> &embp; Optional if fetch from RISC-V git: git checkout riscv-linux-4.14</p>
+<p> &embp; cp ../busybear-linux/conf/linux.config .config </p>
+<p> &embp; make ARCH=riscv olddefconfig </p>
+<p> &embp; make ARCH=riscv vmlinux -j8 CROSS_COMPILE=riscv64-unknown-elf-</p>
+<p> &nbsp; Step 5. Bootloader
+<p> &embp; cd riscv-pk</p>
+<p> &embp; mkdir build && cd build</p>
+<p> &embp; ../configure --enable-logo --host=riscv64-unknown-elf --with-payload=../../riscv-linux/vmlinux </p>
+<p> &embp; make -j8</p>
+
+<p> &nbsp; Step 6. Start qemu</p>
+<p> &embp; cp ../../busybear-linux/busybear.bin ./</p>
+<p> &embp;  sudo qemu-system-riscv64 -nographic -machine virt   -kernel bbl -append "root=/dev/vda ro console=ttyS0"   -drive file=busybear.bin,format=raw,id=hd0   -device virtio-blk-device,drive=hd0  -device virtio-net-device</p>
+<p> &embp; </p>
+<p> &embp; </p>
+<p> &embp; </p>
+<p> &nbsp; Qemu Trick</p>
+<p> &nbsp; 0. quit qemu: Ctrl-A x</p>
+<p> &nbsp; 1. https://www.cnx-software.com/2018/03/16/how-to-run-linux-on-risc-v-with-qemu-emulator/ </p>
+
+<h1> 6. Synopsis VCS/VERDI docker </h1>
+<p> &nbsp; Step 0. This is for Windows only, Linux should be similiar</p>
+<p> &nbsp; Step 1. Docker for Windows: https://docs.docker.com/docker-for-windows/install/</p>
+<p> &nbsp; Step 2. WSL2 for Windows: https://docs.microsoft.com/en-us/windows/wsl/install-win10</p>
+<p> &nbsp; Step 3. Download image: docker pull phyzli/ubuntu18.04_xfce4_vnc4server_synopsys2016</p>
+<p> &nbsp; Step 4. Start docker (modify the mount point for each application, -d for running in daemon): docker run -it -p 5902:5902 --hostname lizhen --mac-address 02:42:ac:11:00:02 -v //d/mydata:/mnt/mydata phyzli/ubuntu18.04_xfce4_vnc4server_synopsys2016 </p>
+<p> &nbsp; Step 5. Start license: lmgrd</p>
+<p> &nbsp; Step 6. Start VNC: vncserver -geometry 1920x1080 :2 </p>
+<p> &nbsp; Step 7. docker start CONTIANER ID for furture usage</p>
+<p> &nbsp; Step 8. docker hspice: phyzli/centos8_xfce4_tigervnc_hspice2010</p>
+<p> &nbsp; Step 9.1 docker virtuoso: phyzli/centos8_xfce4_tigervnc_virtuosoic617_mmsim15_calibre2015</p>
+
+<h1> 7. Sunny Cove Microarchitecture Intel </h1>
+<p> &nbsp; https://en.wikichip.org/wiki/intel/microarchitectures/sunny_cove</p>
+
+<h1> 8. YUY2 format and colorspace </h1> 
+<p> &nbsp; Link: https://www.cnx-software.com/2018/03/16/how-to-run-linux-on-risc-v-with-qemu-emulator/ </p>
+<p> &nbsp; It's in the family as YUV 4:2:2, Y0-U0-Y1-V0 </p>
+<p> &nbsp; Y-Luminance, U-Cb/chrominance, V-Cr/color</p>
+<p> &nbsp; R=Y+1.13983*(V-128)</p>
+<p> &nbsp; G=Y-0.39465*(U-128)-0.58060*(V-128)</p>
+<p> &nbsp; B=Y+2.03211*(U-128)</p>
+
+<h1> 9. Petalinux crashes when connected to Hardware Manager </h1>
+<p> &nbsp; Solution: Disable CPU idle. https://www.xilinx.com/support/answers/69143.html </p>
+<p> &nbsp; Step 1. petalinux-config -c kernel</p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CPU Power Management --->  </p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  -> CPU Idle ---></p>
+<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [] CPU idle PM support</p>
+<p> &nbsp; Step 2. petalinux-build -c kernel -x cleansstate</p>
+<p> &nbsp; Step 3. petalinux-build -c kernel</p>
+
+<h1> 10. Create Custom AXI IP</h1>
+<p> &nbsp;https://www.fpgadeveloper.com/2014/08/creating-a-custom-ip-block-in-vivado.html/ </p>
+
+<h1> 11. html add space </h1>
+<p> &nbsp; One space: nbsp</p>
+<p> &nbsp; Two Spaces: ensp</p>
+<p> &nbsp; Four Spaces: emsp</p>
+
+<h1> 12. Test the speed of disk </h1>
+<p> &nbsp; Write: time dd if=/dev/zero of=/dev/sda1 bs=16M count=1000 </p>
+<p> &nbsp; Read: time dd if=/dev/sda1 of=/dev/null bs=16M count=1000</p>
+
+<h1> 13. Format and mount drive </h1>
+<p> &nbsp; fdisk drive</p>
+<p> &nbsp; mkfs </p> 
+
+<h1> 14. Find large file and print its size on Linux </h1>
+<p> &nbsp; find ./ -type f -size +100000k -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'</p>
+
+<h1> 15. Vivado set number of max threads </h1>
+<p> &nbsp; set_param general.maxThreads <value></p>
+<p> &nbsp; For Windows systems, the default is 2; </p>
+<p> &nbsp; for Linux systems the default is 8</p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+<p> &nbsp; </p>
+
+</html>
