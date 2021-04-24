@@ -1,0 +1,8 @@
+23:15:29 INFO  : Launching XSCT server: xsct -n  -interactive /home/ad2039/Z01misc/jl2039.github.io/C00Bitcoin/accelator/temp_xsdb_launch_script.tcl
+23:15:31 INFO  : Platform repository initialization has completed.
+23:15:31 INFO  : XSCT server has started successfully.
+23:15:31 INFO  : Successfully done setting XSCT server connection channel  
+23:15:31 INFO  : plnx-install-location is set to ''
+23:15:31 INFO  : Successfully done setting workspace for the tool. 
+23:15:31 INFO  : Successfully done query RDI_DATADIR 
+23:15:32 INFO  : Registering command handlers for Vitis TCF services

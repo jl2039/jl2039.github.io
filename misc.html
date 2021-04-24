@@ -40,7 +40,7 @@
 <p> &embp; Optional if fetch from RISC-V git: git checkout riscv-linux-4.14</p>
 <p> &embp; cp ../busybear-linux/conf/linux.config .config </p>
 <p> &embp; make ARCH=riscv olddefconfig </p>
-<p> &embp; make ARCH=riscv vmlinux -j8 CROSS_COMPILE=riscv64-unknown-elf-</p>
+<p> &embp; make ARCH=riscv vmlinux -j8 CROSS_COMPILE=riscv64-unknown-elf- riscv64-unknown-linux-gnu- </p>
 <p> &nbsp; Step 5. Bootloader
 <p> &embp; cd riscv-pk</p>
 <p> &embp; mkdir build && cd build</p>
@@ -112,12 +112,22 @@
 <p> &nbsp; set_param general.maxThreads <value></p>
 <p> &nbsp; For Windows systems, the default is 2; </p>
 <p> &nbsp; for Linux systems the default is 8</p>
-<p> &nbsp; </p>
-<p> &nbsp; </p>
-<p> &nbsp; </p>
-<p> &nbsp; </p>
-<p> &nbsp; </p>
-<p> &nbsp; </p>
+
+<h1> 16. Automatically mount the second disk when boot </h1>
+<p> &nbsp; /dev/nvme1n1p1 /mnt ext defaults 0 0 >> /etc/fstab </p>
+
+<h1> 17. Alveo U50 design files </h1>
+<p> &nbsp; https://www.xilinx.com/member/alveo-vivado.html#u50 </p>
+
+<h1> 18. Docker failed programming externeal connectivity on endpoint webserver </h1>
+<p> &nbsp; sudo service docker stop </p>
+<p> &nbsp; sudo rm /var/lib/docker/network/files/local-kv.db </p>
+<p> &nbsp; sudo service docker start</p>
+
+<h1> 19. Vitis & Ubuntu version mismatch </h1>
+<p> &nbsp; 1. sudo vim /etc/os-release</p>
+<p> &nbsp; 2. swtich to the vitis required version</p>
+<p> &nbsp; 3. ./etc/os-release</p>
 <p> &nbsp; </p>
 <p> &nbsp; </p>
 
