@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<h1>Smart Plug Power Measurement and Save with mysql </h1>
+<h2> 1. Hardware requirement </h2>
+<p>  1.1 Tp-link HS300 </p>
+<p>  1.2 Odroid XU4 development board </p>
+<h2> 2. Set up mysql if you're first time user</h2>
+<p>$ sudo mysql -u root # I had to use "sudo" since is new installation </p>
+<p>mysql> USE mysql; </p>
+<p>mysql> CREATE USER 'YOUR_SYSTEM_USER'@'localhost' IDENTIFIED BY ''; </p>
+<p>mysql> GRANT ALL PRIVILEGES ON *.* TO 'YOUR_SYSTEM_USER'@'localhost'; </p>
+<p>mysql> UPDATE user SET plugin='mysql_native_password' WHERE User='YOUR_SYSTEM_USER'; </p>
+<p>mysql> FLUSH PRIVILEGES;</p>
+<p>mysql> exit;</p>
+<p>$ service mysql restart</p>
+
+<h2>3. Connection to HS300 </h2>
+<p>import pymysql</p>
+<p>from datetime import datetime</p>
+<p>from KasaSmartPowerStrip import SmartPowerStrip</p>
+<p>import subprocess</p>
+<p>import os</p>
+<p>import time as t </p>
+<p>power_strip = SmartPowerStrip('HS300_IP') </p>
+
+<h2> 4. Code </h2>
+<p> </p>
+
+</html>

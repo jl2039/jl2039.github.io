@@ -2,7 +2,7 @@ import socket
 import json
 import struct
 from builtins import bytes
-
+temp = 0
 class SmartPowerStrip(object):
 
     def __init__(self, ip, device_id=None, timeout=2.0, protocol='tcp'):
@@ -47,11 +47,12 @@ class SmartPowerStrip(object):
 
         energy_command = '{"context":{"child_ids":["' + plug_id + '"]},"emeter":{"get_realtime":{}}}'
 
-        response = self.send_command(energy_command, self.protocol)
-
-        realtime_energy_data = response['emeter']['get_realtime']
-
-        return realtime_energy_data
+        flag, response = self.send_command(energy_command, self.protocol)
+        if flag is 1:
+            realtime_energy_data = response['emeter']['get_realtime']
+        else:
+            realtime_energy_data = 0
+        return flag, realtime_energy_data
 
     def get_historical_energy_info(self, month, year, plug_num=None, plug_name=None):
 
@@ -121,7 +122,8 @@ class SmartPowerStrip(object):
     def send_command(self, command, protocol='tcp'):
 
         if protocol == 'tcp':
-            return self._tcp_send_command(command)
+            flag, msg = self._tcp_send_command(command)
+            return flag, msg
         elif protocol == 'udp':
             return self._udp_send_command(command)
         else:
@@ -187,15 +189,21 @@ class SmartPowerStrip(object):
 
         sock_tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock_tcp.settimeout(self.timeout)
-        sock_tcp.connect((self.ip, self.port))
-
-        sock_tcp.send(self._encrypt_command(command))
-
-        data = sock_tcp.recv(2048)
-        sock_tcp.close()
-
-        # the first 4 chars are the length of the command so can be excluded
-        return json.loads(self._decrypt_command(data[4:]))
+        flag = 0
+        try:
+            sock_tcp.connect((self.ip, self.port))        
+            sock_tcp.send(self._encrypt_command(command))
+            data = sock_tcp.recv(2048)
+            sock_tcp.close()
+            # the first 4 chars are the length of the command so can be excluded
+            
+            temp = json.loads(self._decrypt_command(data[4:]))
+            flag = 1
+            return flag, temp
+        except socket.error:
+            print("Send time out")
+            d = {'msg': 0}
+            return flag, d
 
     def _udp_send_command(self, command):
 
