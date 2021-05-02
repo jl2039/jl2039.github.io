@@ -8,6 +8,8 @@
 <p>$ sudo mysql -u root # I had to use "sudo" since is new installation </p>
 <p>mysql> USE mysql; </p>
 <p>mysql> CREATE USER 'YOUR_SYSTEM_USER'@'localhost' IDENTIFIED BY ''; </p>
+<p>mysql> ALTER USER 'user-name' @ 'localhost' IDENTIFIED BY '**'; //change password </p>
+
 <p>mysql> GRANT ALL PRIVILEGES ON *.* TO 'YOUR_SYSTEM_USER'@'localhost'; </p>
 <p>mysql> UPDATE user SET plugin='mysql_native_password' WHERE User='YOUR_SYSTEM_USER'; </p>
 <p>mysql> FLUSH PRIVILEGES;</p>
@@ -24,6 +26,11 @@
 <p>import time as t </p>
 <p>power_strip = SmartPowerStrip('HS300_IP') </p>
 
+<h2>4. Steup phpmyadmin for web access </h2>
+<p> sudo apt install phpmyadmin php-mbstring php-gettext </p>
+<p> sudo systemctl restart apache2 </p>
+<p> sudo chmod 777 -R /user/share/phpmyadmin </p>
+<p> sudo ln -s /user/share/phpmyadmin /var/www/html </p>
 <h2> 4. Code </h2>
 <p> https://github.com/jl2039/jl2039.github.io/tree/master/A00PowerMeasure</p>
 
