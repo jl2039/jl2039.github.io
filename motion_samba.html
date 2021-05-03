@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<h1>Motion detection using OpenCV and upload video to NAS </h1>
+<h2> 1. Hardware requirement </h2>
+<p>  1.1 Rashpberry pi 4 +B 8G </p>
+<p>  1.2 USB Webcams </p>
+<h2> 2. Setup samba</h2>
+<p> sudo apt install samba </p>
+<p> sudo vim /etc/samba/smb.conf</p>
+<p> [sambashare] </p>
+<p> comment = Smaba on Odroid </p>
+<p>     path = /media/USB </p>
+<p>     valid users = odroid </p>
+<p>     read only = no </p>
+<p>     public = no </p>
+<p>     browsable = yes </p>
+<p> sudo smbpasswd -a odroid </p>
+
+
+<p>mysql> GRANT ALL PRIVILEGES ON *.* TO 'YOUR_SYSTEM_USER'@'localhost'; </p>
+<p>mysql> UPDATE user SET plugin='mysql_native_password' WHERE User='YOUR_SYSTEM_USER'; </p>
+<p>mysql> FLUSH PRIVILEGES;</p>
+<p>mysql> exit;</p>
+<p>$ service mysql restart</p>
+<p>mysql> CREATE DATABASE Power; </p>
+
+<h2>3. Connection to HS300 </h2>
+<p>import pymysql</p>
+<p>from datetime import datetime</p>
+<p>from KasaSmartPowerStrip import SmartPowerStrip</p>
+<p>import subprocess</p>
+<p>import os</p>
+<p>import time as t </p>
+<p>power_strip = SmartPowerStrip('HS300_IP') </p>
+
+<h2>4. Steup phpmyadmin for web access </h2>
+<p> sudo apt install phpmyadmin php-mbstring php-gettext </p>
+<p> sudo systemctl restart apache2 </p>
+<p> sudo chmod 777 -R /user/share/phpmyadmin </p>
+<p> sudo ln -s /user/share/phpmyadmin /var/www/html </p>
+<h2> 5. Code </h2>
+<p> https://github.com/jl2039/jl2039.github.io/tree/master/A00PowerMeasure</p>
+
+</html>
