@@ -133,4 +133,15 @@
 <p> &nbsp; ssh -i ~/.ssh/mykey user@host</p>
 <p> &nbsp; </p>
 
+<h1> 21. Unlock the encrypted disk from terminal </h1> 
+<p>sudo cryptsetup open /dev/nvme0n1p1 nck </p>
+<p>sudo mount /dev/mapper/nck /media/share </p>
+
+<h1> 22. Increase swap file in Ubuntu  </h1>
+<p>https://askubuntu.com/questions/920595/fallocate-fallocate-failed-text-file-busy-in-ubuntu-17-04</p>
+
+<h1> 23. Remove large file in git commit  </h1>
+<p>git rm --cached <filename></p>
+<p>git commit --amend -C HEAD</p>
+
 </html>
